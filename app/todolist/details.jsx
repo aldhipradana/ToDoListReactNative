@@ -1,7 +1,9 @@
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { router, useLocalSearchParams } from 'expo-router'
+import { Stack, router, useLocalSearchParams } from 'expo-router'
 import { getItemByIndex, itemHandler, toDoItemsKey } from '../../db/itemHandler'
+import { observer } from 'mobx-react-lite'
+import { runInAction } from 'mobx'
 
 const details = () => {
   const params = useLocalSearchParams()
@@ -46,21 +48,40 @@ const details = () => {
     });
   }
 
+  const handleUpdate = () => { 
+    console.log('Update');
+    router.navigate({pathname: 'todolist/updateItem', params: {id: itemId}});
+   }
+
+  const ObserveTodo = observer(({ itemHandler }) => 
+    <View>
+      <Text style={styles.detailTitle}>Title:</Text>
+      <Text style={styles.itemTitle}>{itemHandler.getSelectedItem()?.title}</Text>
+
+      <Text style={styles.detailTitle}>Description:</Text>
+      <Text style={styles.itemDesc}>{itemHandler.getSelectedItem()?.desc}</Text>
+    </View>
+  );
+
   return (
+    <>
+    <Stack.Screen options={{ 
+      title: 'Details',
+      headerRight: () => <Button title="📝" onPress={handleUpdate} />,
+     }} />
     <SafeAreaView style={styles.container}>
       {/* <Text>To do with id: {itemId}</Text> */}
 
-      <Text style={styles.detailTitle}>Title:</Text>
-      <Text style={styles.itemTitle}>{title}</Text>
-
-      <Text style={styles.detailTitle}>Description:</Text>
-      <Text style={styles.itemDesc}>{desc}</Text>
+      <ObserveTodo itemHandler={itemHandler} />
       
       {/* Make a floating button */}
       <TouchableOpacity style={styles.doneFloatingButton} onPress={handleDone}>
         <Text style={styles.doneButtonText}>Done</Text>
       </TouchableOpacity>
     </SafeAreaView>
+
+
+    </>
   )
 }
 

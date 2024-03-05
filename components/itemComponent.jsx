@@ -44,8 +44,9 @@ const styles = StyleSheet.create({
         margin: 12,
         borderWidth: 0,
         borderBottomWidth: 1,
-        borderColor: '#f0f0f0',
-        padding: 10
+        borderColor: '#333',
+        padding: 10,
+        fontSize: 18,
     },
     descInput: {
         height: 200,

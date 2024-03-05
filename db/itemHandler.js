@@ -6,6 +6,7 @@ export const toDoItemsKey = "toDoItems";
 class ItemHandler{
 
     toDoLists = [];
+    selectedItem = {};
 
     constructor() {
         makeAutoObservable(this);
@@ -23,6 +24,14 @@ class ItemHandler{
         }).catch((e) => {
             console.log('Error on setObservableOnInit: ', e);
         });
+    }
+
+    setSelectedItem = (item) => {
+        this.selectedItem = item;
+    }
+
+    getSelectedItem = () => {
+        return this.selectedItem;
     }
 
     // remove item by index
@@ -65,6 +74,9 @@ class ItemHandler{
             AsyncStorage.getItem(toDoItemsKey)
             .then((value) => {
                 const items = JSON.parse(value);
+                runInAction(() => {
+                    this.selectedItem = items[index];
+                });
                 resolve(items[index]);
             })
             .catch((e) => {
@@ -84,6 +96,7 @@ class ItemHandler{
                 .then(() => {
                     runInAction(() => {
                         this.toDoLists = items;
+                        this.selectedItem = item;
                     })
                     resolve({message: "Item Updated Successfully"});
                 }).catch((e) => {
