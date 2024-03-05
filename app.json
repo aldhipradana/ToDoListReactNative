@@ -23,6 +23,7 @@
         "backgroundColor": "#ffffff"
       }
     },
+    "scheme": "todolistreactnative",
     "web": {
       "favicon": "./assets/favicon.png"
     },
