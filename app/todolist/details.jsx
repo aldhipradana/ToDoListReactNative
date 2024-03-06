@@ -20,7 +20,7 @@ const details = () => {
 
   const getDetail = () => {
     console.log('Item Id: ', itemId);
-    itemHandler.getItemByIndex(itemId).then((item) => {
+    itemHandler.getItemById(itemId).then((item) => {
       console.log('Item: ', item);
       setTitle(item.title);
       setDesc(item.desc);
@@ -34,13 +34,14 @@ const details = () => {
   const handleDone = () => {
     console.log('Done');
     const item = {
+      id: itemId,
       title: title,
       desc: desc,
       category: category,
       status: 'done',
     }
 
-    itemHandler.updateItemByIndex(itemId, item).then((res) => {
+    itemHandler.updateItemById(itemId, item).then((res) => {
       console.log('Item Updated: ', res);
       router.dismiss();
     }).catch((e) => {

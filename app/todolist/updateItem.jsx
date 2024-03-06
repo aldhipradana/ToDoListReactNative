@@ -31,7 +31,7 @@ export default function updateItem () {
 
     const getDetail = () => {
     console.log('Item Id: ', itemId);
-    itemHandler.getItemByIndex(itemId).then((item) => {
+    itemHandler.getItemById(itemId).then((item) => {
         console.log('Item: ', item);
         setTitle(item.title);
         setDesc(item.desc);
@@ -45,13 +45,21 @@ export default function updateItem () {
     const updateHandler = () => {
         console.log('Update');
         const item = {
+            id: itemId,
             title: title,
             desc: desc,
             category: category,
             status: status,
         }
 
-        itemHandler.updateItemByIndex(itemId, item).then((res) => {
+        // itemHandler.updateItemByIndex(itemId, item).then((res) => {
+        //     console.log('Item Updated: ', res);
+        //     router.dismiss();
+        // }).catch((e) => {
+        //     console.log('Error on updateTodoItem: ', e);
+        // });
+
+        itemHandler.updateItemById(itemId, item).then((res) => {
             console.log('Item Updated: ', res);
             router.dismiss();
         }).catch((e) => {

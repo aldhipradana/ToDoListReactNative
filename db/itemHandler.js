@@ -55,6 +55,27 @@ class ItemHandler{
         });
     }
 
+    searchItemByTitle = (title) => {
+        return new Promise((resolve, reject) => {
+            // search item like title if title empty return all items
+            AsyncStorage.getItem(toDoItemsKey)
+            .then((value) => {
+                const items = JSON.parse(value);
+                const result = items.filter((item) => item.title.toLowerCase().includes(title.toLowerCase()));
+                runInAction(() => {
+                    this.toDoLists = result;
+                });
+                resolve(result);
+            })
+            .catch((e) => {
+                console.log(e);
+                reject(e);
+            });
+        }
+        );
+    }
+
+    
 
     getAllItems = () => {
         return new Promise((resolve, reject) => {
@@ -86,11 +107,51 @@ class ItemHandler{
         });
     }
 
+    getItemById = (id) => {
+        return new Promise((resolve, reject) => {
+            AsyncStorage.getItem(toDoItemsKey)
+            .then((value) => {
+                const items = JSON.parse(value);
+                const item = items.find((item) => item.id === id);
+                runInAction(() => {
+                    this.selectedItem = item;
+                });
+                resolve(item);
+            })
+            .catch((e) => {
+                console.log(e);
+                reject(e);
+            });
+        });
+    }
+
     updateItemByIndex = (index, item) => {
         return new Promise((resolve, reject) => {
             AsyncStorage.getItem(toDoItemsKey)
             .then((value) => {
                 const items = JSON.parse(value);
+                items[index] = item;
+                AsyncStorage.setItem(toDoItemsKey, JSON.stringify(items))
+                .then(() => {
+                    runInAction(() => {
+                        this.toDoLists = items;
+                        this.selectedItem = item;
+                    })
+                    resolve({message: "Item Updated Successfully"});
+                }).catch((e) => {
+                    console.log(e);
+                    reject(e);
+                });
+            });
+        });
+    }
+
+    updateItemById = (id, item) => {
+        return new Promise((resolve, reject) => {
+            AsyncStorage.getItem(toDoItemsKey)
+            .then((value) => {
+                const items = JSON.parse(value);
+                const index = items.findIndex((item) => item.id === id);
                 items[index] = item;
                 AsyncStorage.setItem(toDoItemsKey, JSON.stringify(items))
                 .then(() => {

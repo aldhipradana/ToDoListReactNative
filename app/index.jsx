@@ -23,7 +23,7 @@ export default function App() {
   
       if (username === '' && password === '') {
         console.log('Login Success');
-        // AsyncStorage.clear();
+        AsyncStorage.clear();
         AsyncStorage.setItem('username', username);
         AsyncStorage.setItem('passw', password);
         router.replace('todolist/list');

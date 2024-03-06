@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Stack, router } from 'expo-router'
 import { addTodoItem, getItem, itemHandler } from '../../db/itemHandler'
+import uuid from 'react-native-uuid';
+
 
 import ItemComponent from '../../components/itemComponent'
 
@@ -27,6 +29,7 @@ export default function addItem(){
         console.log('Title: ', title);
         console.log('Description: ', desc);
         const item = {
+            id: uuid.v4(),
             title: title,
             desc: desc,
             status: 'open',

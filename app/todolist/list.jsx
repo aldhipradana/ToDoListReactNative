@@ -1,4 +1,4 @@
-import { Button, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native'
+import { Button, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, Touchable, TouchableOpacity, View } from 'react-native'
 import { Stack, router } from 'expo-router'
 import React, { useState } from 'react'
 import { useEffect } from 'react'
@@ -16,6 +16,15 @@ const list = () => {
 
   const [count, setCount] = useState(0);
 
+  const handleSearch = (text) => {
+    console.log('Search: ', text);
+    itemHandler.searchItemByTitle(text).then((res) => {
+      console.log('Search Result: ', res);
+      setTodoItems(res);
+    }).catch((e) => {
+      console.log('Error on searchToDoItems: ', e);
+    });
+  }
 
   useEffect(() => {
     console.log("List Page Loaded")
@@ -27,7 +36,7 @@ const list = () => {
       {itemHandler.getObservableToDoLists() === null? <Text style={styles.todoTitle}> No To Do Items </Text> : null}
       {itemHandler.getObservableToDoLists()?.map((item, index) => (
         <>
-        <TouchableOpacity style={[styles.itemCard, item.status === 'done'? styles.cardGreen : '' ,]} onPress={() => router.navigate({pathname: "todolist/details", params:{id: index}})} > 
+        <TouchableOpacity key={index} style={[styles.itemCard, item.status === 'done'? styles.cardGreen : '' ,]} onPress={() => router.navigate({pathname: "todolist/details", params:{id: item.id}})} > 
           <Text style={[styles.itemTitle, item.status === 'done'? styles.titleWhite : '' ,]}> {`${index+1}. `} </Text>
           <Text style={[styles.itemTitle, item.status === 'done'? styles.titleWhite : '' ,]}> {item.title} </Text>
           
@@ -48,6 +57,8 @@ const list = () => {
       }}
     />
     <SafeAreaView style={styles.container}>
+      {/* Search Input */}
+      <TextInput style={styles.searchInput} placeholder="Search To Do Items" onChangeText={handleSearch} />
       <ScrollView style={styles.scrollViewContainer}>
         <ObserveTodo itemHandler={itemHandler} />
         {/* { todoItems !== null? <ObserveTodo itemHandler={itemHandler} /> : <Text style={styles.todoTitle}> No To Do Items </Text> } */}
@@ -125,6 +136,15 @@ const styles = StyleSheet.create({
 
   titleWhite: {
     color: '#fff',
+  },
+
+  searchInput: {
+    width: '90%',
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 10,
+    fontSize: 17,
   }
 
 })
