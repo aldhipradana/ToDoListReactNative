@@ -35,13 +35,10 @@ const list = () => {
     <View>
       {itemHandler.getObservableToDoLists() === null? <Text style={styles.todoTitle}> No To Do Items </Text> : null}
       {itemHandler.getObservableToDoLists()?.map((item, index) => (
-        <>
         <TouchableOpacity key={index} style={[styles.itemCard, item.status === 'done'? styles.cardGreen : '' ,]} onPress={() => router.navigate({pathname: "todolist/details", params:{id: item.id}})} > 
           <Text style={[styles.itemTitle, item.status === 'done'? styles.titleWhite : '' ,]}> {`${index+1}. `} </Text>
           <Text style={[styles.itemTitle, item.status === 'done'? styles.titleWhite : '' ,]}> {item.title} </Text>
-          
-        </TouchableOpacity> 
-        </>
+        </TouchableOpacity>
       ))}
     </View>
   );
